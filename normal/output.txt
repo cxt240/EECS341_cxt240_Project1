@@ -1,0 +1,202 @@
+chris@TsueiLinux ~ $ mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 36
+Server version: 5.5.53-0ubuntu0.14.04.1 (Ubuntu)
+
+Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES
+    -> ;
++-------------------------+
+| Database                |
++-------------------------+
+| information_schema      |
+| EECS341_cxt240_Project1 |
+| mysql                   |
+| performance_schema      |
++-------------------------+
+4 rows in set (0.01 sec)
+
+mysql> USE EECS341_cxt240_Project1
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> SHOW TABLES
+    -> ;
++-----------------------------------+
+| Tables_in_EECS341_cxt240_Project1 |
++-----------------------------------+
+| AGENTS                            |
+| CUSTOMERS                         |
+| ORDERS                            |
+| PRODUCTS                          |
++-----------------------------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM CUSTOMERS
+    -> ;
++-----+---------+------------+--------+
+| cid | cname   | city       | discnt |
++-----+---------+------------+--------+
+|   1 | Chris   | Westlake   |      0 |
+|   2 | Bob     | Chicago    |   0.05 |
+|   3 | Charlie | Cincinnati |    0.1 |
+|   4 | Lisa    | New York   |      1 |
++-----+---------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM PRODUCTS
+    -> ;
++-----+---------------+-------------+----------+----------+
+| pid | pname         | city        | quantity | price    |
++-----+---------------+-------------+----------+----------+
+|   0 | Red           | Tokyo       |     5500 |     20.5 |
+|   1 | Blue          | Nagasaki    |     5500 |     20.5 |
+|   2 | Crystal       | Beijing     |    10500 |    25.87 |
+|   3 | Saphire       | Moscow      |    15000 |    30.75 |
+|   4 | Black         | Kyoto       |    25000 |    39.99 |
+|   5 | Black 2       | Hiroshima   |    35000 |    42.99 |
+|   6 | Alpha Saphire | Chiba       |    50000 |    45.65 |
+|   7 | Pokemon Go    | Los Angeles |  1000000 |        5 |
+|   8 | Sun           | Tokyo       |      500 |    15.25 |
+|   9 | Uranium       | Chiba       |       20 | 31415900 |
++-----+---------------+-------------+----------+----------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT * FROM AGENTS;
++-----+-----------+-----------+---------+
+| aid | aname     | city      | percent |
++-----+-----------+-----------+---------+
+|   1 | Jenny Doe | Houston   |    0.03 |
+|   2 | Kavan     | Pittsburg |     0.1 |
+|   3 | Jerray    | Austin    |    0.05 |
+|   4 | Sharon    | Baltimore |    0.01 |
++-----+-----------+-----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM ORDERS;
++-------+------+-------+------+------+------+------+---------+
+| ordno | year | month | cid  | aid  | pid  | qty  | dollars |
++-------+------+-------+------+------+------+------+---------+
+|     1 | 2015 |     1 |    1 |    1 |    9 |    5 |       3 |
+|     2 | 2015 |     2 |    1 |    2 |    9 |    4 |       5 |
+|     3 | 2015 |     3 |    1 |    3 |    9 |    2 |       6 |
+|     4 | 2015 |     4 |    1 |    4 |    9 |    4 |       5 |
+|     5 | 2015 |     5 |    2 |    1 |    9 |   14 |     200 |
+|     6 | 2015 |     6 |    2 |    2 |    9 |    7 |      23 |
+|     7 | 2015 |     7 |    2 |    3 |    9 |    1 |      12 |
+|     8 | 2015 |     8 |    2 |    4 |    9 |    4 |      13 |
+|     9 | 2015 |     9 |    3 |    1 |    9 |    6 |       9 |
+|    10 | 2015 |    10 |    3 |    2 |    9 |   13 |      59 |
+|    11 | 2015 |    11 |    3 |    3 |    9 |   23 |      68 |
+|    12 | 2015 |    12 |    3 |    4 |    9 |   29 |      56 |
+|    13 | 2015 |     7 |    4 |    1 |    9 |   14 |     289 |
+|    14 | 2010 |     1 |    4 |    2 |    9 |   13 |     278 |
+|    15 | 2009 |     6 |    4 |    3 |    9 |   12 |     478 |
+|    16 | 2004 |     8 |    4 |    4 |    9 |   12 |     400 |
+|    17 | 2011 |     7 |    1 |    3 |    4 |   15 |     200 |
+|    18 | 2009 |     3 |    3 |    2 |    5 |   16 |      39 |
+|    19 | 2012 |     4 |    4 |    3 |    2 |    2 |      12 |
+|    20 | 2006 |     3 |    1 |    1 |    1 |    2 |      24 |
+|    21 | 2009 |     5 |    3 |    1 |    4 |    3 |      72 |
++-------+------+-------+------+------+------+------+---------+
+21 rows in set (0.00 sec)
+
+mysql> set @name = 'Jenny Doe'
+    -> ;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT P.pname FROM PRODUCTS P, ORDERS O, AGENTS A WHERE P.pid=O.pid AND O.aid = A.aid AND A.aname = @name;
++---------+
+| pname   |
++---------+
+| Uranium |
+| Uranium |
+| Uranium |
+| Uranium |
+| Blue    |
+| Black   |
++---------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT P.pname
+    -> FROM PRODUCTS P
+    -> WHERE P.price = (
+    -> SELECT MIN(P1.price)
+    -> FROM PRODUCTS P1
+    -> WHERE P.city = P1.city);
++---------------+
+| pname         |
++---------------+
+| Blue          |
+| Crystal       |
+| Saphire       |
+| Black         |
+| Black 2       |
+| Alpha Saphire |
+| Pokemon Go    |
+| Sun           |
++---------------+
+8 rows in set (0.01 sec)
+
+mysql> set @year = 2015;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT O.month, P.pname FROM ORDERS O, PRODUCTS P WHERE O.pid = P.pid AND O.YEAR = @year AND P.price = ( SELECT MAX(P1.price) FROM ORDERS O1, PRODUCTS P1 WHERE O1.pid = P1.pid AND O1.month = O.month);
++-------+---------+
+| month | pname   |
++-------+---------+
+|     1 | Uranium |
+|     2 | Uranium |
+|     3 | Uranium |
+|     4 | Uranium |
+|     5 | Uranium |
+|     6 | Uranium |
+|     7 | Uranium |
+|     8 | Uranium |
+|     9 | Uranium |
+|    10 | Uranium |
+|    11 | Uranium |
+|    12 | Uranium |
+|     7 | Uranium |
++-------+---------+
+13 rows in set (0.00 sec)
+
+
+mysql> SELECT C.cname
+    -> FROM CUSTOMERS C
+    -> WHERE C.cid NOT IN (
+    -> SELECT C1.cid
+    -> FROM ORDERS O, PRODUCTS P, CUSTOMERS C1
+    -> WHERE O.pid = P.pid AND O.cid = C1.cid AND P.price < 1000000);
++-------+
+| cname |
++-------+
+| Bob   |
++-------+
+1 row in set (0.00 sec)
+
+mysql> SELECT P.pname
+    -> FROM PRODUCTS P
+    -> WHERE NOT EXISTS (
+    -> SELECT * FROM AGENTS A, CUSTOMERS C
+    -> WHERE NOT EXISTS (
+    -> SELECT * FROM ORDERS O
+    -> WHERE P.pid = O.pid AND O.aid = A.aid AND 0.cid = C.cid));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'cid = C.cid))' at line 7
+mysql> SELECT P.pname FROM PRODUCTS P WHERE NOT EXISTS ( SELECT * FROM AGENTS A, CUSTOMERS C WHERE NOT EXISTS ( SELECT * FROM ORDERS O WHERE P.pid = O.pid AND O.aid = A.aid AND O.cid = C.cid));
++---------+
+| pname   |
++---------+
+| Uranium |
++---------+
+1 row in set (0.01 sec)
+
